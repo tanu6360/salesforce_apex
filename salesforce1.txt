@@ -1,0 +1,71 @@
+--------------------------------------------------------------------------------------------------------------------------------------
+Module: Apex Basics & Database
+
+Challenge 1: Get Started with Apex
+public class StringListTest {
+public static List<String> generateStringList(Integer N){
+        List<String> TestList = new List<String>();
+        for(Integer i=0;i<N;i++){
+            TestList.add('Test '+ i);
+            system.debug(TestList[i]);
+        }
+        return TestList;
+    }    
+}
+______________________
+Challenge 3: Manipulate Records with DML
+public class AccountHandler{
+    public static Account insertNewAccount(String accountName){  
+        Account acctToBeInserted = new Account(Name=accountName, AccountNumber='12345678');
+      
+        try{
+            insert acctToBeInserted;
+        }catch(DMLException e){
+            System.debug('Inside DMLException catch ,error is ' + e.getMessage());
+            acctToBeInserted = null;   
+        }
+               return acctToBeInserted;                 
+       }
+}
+____________________
+
+Challenge 4: Write SOQL Queries
+public class ContactSearch {
+    
+    public static List<Contact> searchForContacts(String lastName, String maillingpostalCode){
+        
+        List<Contact> contactList = [Select Id,Name from Contact where
+                                  LastName =: lastName and 
+                                  MailingPostalCode =: maillingpostalCode];
+        return contactList;
+    }
+}
+____________________________________
+
+Challenge 5: Write SOSL Queries
+SOQL and SOSL Reference
+
+public class ContactAndLeadSearch {
+  
+    public static list<list< sObject >> searchContactsAndLeads(String lastName){
+     
+        list<list< sObject >> ContactLeadList = [ Find : lastName IN ALL FIELDS
+                                                 RETURNING contact(name),
+                                                 lead (Name) ];
+      return ContactLeadList;
+  }   
+} 
+press ctrl +E to create the name ending with Sumith
+
+public class ContactAndLeadSearch {
+
+    public static List<List<SObject>> searchContactsAndLeads(String searchTerm) {
+        return [
+            FIND :searchTerm
+            IN NAME FIELDS
+            RETURNING
+                Contact(Id, FirstName, LastName),
+                Lead(Id, FirstName, LastName)
+        ];
+    }
+}
